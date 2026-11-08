@@ -1,0 +1,127 @@
+
+╭──────────────────────── TinyTorch Architecture Tier ─────────────────────────╮
+│ MILESTONE 05: THE TRANSFORMER ERA (2017-2022)                                │
+│                                                                              │
+│ Train TinyGPT from scratch on Shakespeare: the foundation of ChatGPT!        │
+│                                                                              │
+│ • Model: Causal Pre-LN Transformer Decoder (Vaswani et al. / GPT-2 / GPT-3)  │
+│ • Autograd: All Q, K, V projections and MLP weights receive reverse          │
+│ gradients                                                                    │
+│ • Systems: Parallel teacher-forcing training; foundation for KV-cache        │
+│ serving                                                                      │
+│ • Target Workload: Autoregressive Next-Token Prediction on TinyShakespeare   │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+============================================================
+  This milestone requires the TinyShakespeare dataset
+============================================================
+
+  Dataset Info:
+  +------------------+--------------------------------------+
+  | Name             | TinyShakespeare                      |
+  | Description      | 1.1MB of William Shakespeare plays and sonnets |
+  | Download Size    | ~1.1 MB                              |
+  | Location         | /user-data/djr/cs249r_book/tinytorch |
+  +------------------+--------------------------------------+
+
+  System Check:
+    * Available space: 1018862.5 MB
+    * Required space:  ~1.1 MB
+    * Status: Ready to download
+
+  Download TinyShakespeare? [Y/n]: 
+  No answer (input is not a terminal), so nothing was downloaded.
+  Run it in a terminal, or set TINYTORCH_AUTO_DOWNLOAD=1 to download without asking.
+============================================================
+📖 Loaded offline Shakespeare sample: tinyshakespeare_sample.txt
+📖 Dataset loaded: 21,096 characters of Shakespeare
+
+🔤 Initializing Tokenizer...
+  Vocabulary size : 59 tokens
+  Encoded stream  : 21,096 tokens
+  Slices created  : 4,739 training windows (seq_len=32)
+  Held-out text   : 2,109 tokens (never trained on)
+
+🏗️ Constructing TinyGPT Model...
+                        Model Architecture & Parameters                         
+╭──────────────────┬────────────────────────────┬──────────────────────────────╮
+│ Component        │ Configuration              │ Implementation               │
+├──────────────────┼────────────────────────────┼──────────────────────────────┤
+│ Token Embeddings │ 59 × 64                    │ Module 11 (EmbeddingLayer)   │
+│ Position Table   │ 64 × 64                    │ Module 11 (Learned           │
+│                  │                            │ Positional)                  │
+│ Attention        │ 2 blocks, 4 heads (causal) │ Module 12                    │
+│                  │                            │ (MultiHeadAttention)         │
+│ Feed-Forward     │ 4× expansion (256) + GELU  │ Module 02 & 03 (MLP)         │
+│ Total Parameters │ 111,744                    │ 100% Student Authored        │
+╰──────────────────┴────────────────────────────┴──────────────────────────────╯
+  Loss before training: 4.5116 on held-out text (uniform guessing: 4.0775)
+
+🚀 Training TinyGPT from Scratch (Next-Token Prediction)...
+  Epoch 12/12 - Loss: 0.6743 (PPL: 2.0) | Held-out: 3.0852 ━━━━━━━━ 100% 0:01:00
+
+⏱️ Training completed in 60.55 seconds (5.05s/epoch)
+                       Training Loss Trajectory                        
+╭──────────┬───────────────────────────┬────────────┬─────────────────╮
+│  Epoch   │ Epoch Loss (your Trainer) │ Perplexity │   Held-out Loss │
+├──────────┼───────────────────────────┼────────────┼─────────────────┤
+│ Epoch 1  │                    2.6724 │      14.47 │          2.3231 │
+│ Epoch 4  │                    1.6558 │       5.24 │ 1.9939 (lowest) │
+│ Epoch 7  │                    1.1515 │       3.16 │          2.2757 │
+│ Epoch 12 │                    0.6743 │       1.96 │          3.0852 │
+╰──────────┴───────────────────────────┴────────────┴─────────────────╯
+✨ Generating Shakespeare Autoregressively...
+
+╭─────────────────────────── Sample: First Citizen: ───────────────────────────╮
+│ Prompt: 'First Citizen:'                                                     │
+│                                                                              │
+│ Generated Output:                                                            │
+│ First Citizen:                                                               │
+│ Madam, the Ladysaysai, g, owe m, o m'o ge w?                                 │
+│                                                                              │
+│ Generated in 62.8ms (temp=0.8)                                               │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─────────────────────────────── Sample: ROMEO: ───────────────────────────────╮
+│ Prompt: 'ROMEO:'                                                             │
+│                                                                              │
+│ Generated Output:                                                            │
+│ ROMEO:                                                                       │
+│ F:                                                                           │
+│ Methy beirencounes your f f f f f bimor f                                    │
+│                                                                              │
+│ Generated in 57.2ms (temp=0.8)                                               │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─────────────────────────────── Sample: KING: ────────────────────────────────╮
+│ Prompt: 'KING:'                                                              │
+│                                                                              │
+│ Generated Output:                                                            │
+│ <UNK>ING:                                                                    │
+│ Let fis for us, I this answelide t r' trem'm                                 │
+│                                                                              │
+│ Generated in 56.4ms (temp=0.8)                                               │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────────── Success! ──────────────────────────────────╮
+│ 🏆 MILESTONE ACHIEVED: TINYGPT LEARNED FROM CONTEXT                          │
+│                                                                              │
+│   • Loss before training : 4.5116                                            │
+│   • Final training loss  : 0.5875 (reduction: -3.92)                         │
+│   • Perplexity   : 1.80 on the training text (uniform guessing over 59       │
+│ characters scores 59)                                                        │
+│   • Held-out loss: 1.9939 (epoch 4) on text never trained on                 │
+│                    (a counted bigram model scores 2.4908)                    │
+│   • Samples      : printed above. Low loss does not guarantee readable       │
+│                    text. Nothing here scores coherence, so judge the         │
+│                    samples yourself.                                         │
+│   • Causality probe  : passed (changing future tokens moved past logits by   │
+│ at most 0.0e+00)                                                             │
+│   • Attention probe  : passed (weight entropy 0.56 of uniform; 1.00 = every  │
+│ earlier token weighted equally)                                              │
+│                                                                              │
+│ You have constructed and trained the core generative engine of ChatGPT       │
+│ using exclusively the runtime, autograd, and neural network primitives       │
+│ you wrote from scratch in TinyTorch!                                         │
+│                                                                              │
+│ In Modules 14-19, you'll optimize this model with KV caching (Module 18),    │
+│ INT8 quantization (Module 15), and hardware acceleration (Module 17).        │
+╰──────────────────────────────────────────────────────────────────────────────╯

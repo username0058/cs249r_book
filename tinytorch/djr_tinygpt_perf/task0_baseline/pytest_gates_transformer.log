@@ -1,0 +1,44 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0 -- /user-data/djr/env-tito/bin/python
+cachedir: .pytest_cache
+rootdir: /user-data/djr/cs249r_book/tinytorch
+configfile: pyproject.toml
+plugins: anyio-4.16.0
+collecting ... collected 34 items
+
+tests/milestones/test_gates_transformer.py::test_probe_passes_correct_causal_attention PASSED [  2%]
+tests/milestones/test_gates_transformer.py::test_probe_fails_attention_without_the_mask PASSED [  5%]
+tests/milestones/test_gates_transformer.py::test_probe_fails_a_mask_shifted_by_one PASSED [  8%]
+tests/milestones/test_gates_transformer.py::test_bigram_baseline_matches_hand_count PASSED [ 11%]
+tests/milestones/test_gates_transformer.py::test_numpy_cross_entropy_matches_hand_computation PASSED [ 14%]
+tests/milestones/test_gates_transformer.py::test_numpy_cross_entropy_is_stable_and_shape_agnostic PASSED [ 17%]
+tests/milestones/test_gates_transformer.py::test_measured_loss_uses_numpy_not_the_criterion PASSED [ 20%]
+tests/milestones/test_gates_transformer.py::test_cross_entropy_check_passes_correct_loss PASSED [ 23%]
+tests/milestones/test_gates_transformer.py::test_cross_entropy_check_fails_broken_forward[zero] PASSED [ 26%]
+tests/milestones/test_gates_transformer.py::test_cross_entropy_check_fails_broken_forward[sum_not_mean] PASSED [ 29%]
+tests/milestones/test_gates_transformer.py::test_cross_entropy_check_fails_broken_forward[crash] PASSED [ 32%]
+tests/milestones/test_gates_transformer.py::test_position_probe_passes_correct_positional_encoding PASSED [ 35%]
+tests/milestones/test_gates_transformer.py::test_position_probe_fails_identity_positional_encoding PASSED [ 38%]
+tests/milestones/test_gates_transformer.py::test_attention_probe_passes_content_based_attention PASSED [ 41%]
+tests/milestones/test_gates_transformer.py::test_attention_probe_fails_uniform_attention PASSED [ 44%]
+tests/milestones/test_gates_transformer.py::test_shakespeare_correct_code_passes PASSED [ 47%]
+tests/milestones/test_gates_transformer.py::test_shakespeare_without_causal_mask_fails_on_causality PASSED [ 50%]
+tests/milestones/test_gates_transformer.py::test_shakespeare_with_attention_zeroed_fails PASSED [ 52%]
+tests/milestones/test_gates_transformer.py::test_chat_with_attention_zeroed_fails PASSED [ 55%]
+tests/milestones/test_gates_transformer.py::test_tinycopilot_correct_code_passes PASSED [ 58%]
+tests/milestones/test_gates_transformer.py::test_tinycopilot_with_attention_zeroed_fails PASSED [ 61%]
+tests/milestones/test_gates_transformer.py::test_chat_correct_code_passes PASSED [ 64%]
+tests/milestones/test_gates_transformer.py::test_chat_without_causal_mask_fails_on_causality PASSED [ 67%]
+tests/milestones/test_gates_transformer.py::test_chat_with_noop_train_epoch_fails PASSED [ 70%]
+tests/milestones/test_gates_transformer.py::test_cross_entropy_returning_zero_fails[05_2017_transformer/01_tinygpt_shakespeare.py] PASSED [ 73%]
+tests/milestones/test_gates_transformer.py::test_cross_entropy_returning_zero_fails[05_2017_transformer/03_tinycopilot.py] PASSED [ 76%]
+tests/milestones/test_gates_transformer.py::test_cross_entropy_returning_zero_fails[05_2017_transformer/04_tinygpt_chat.py] PASSED [ 79%]
+tests/milestones/test_gates_transformer.py::test_identity_positional_encoding_fails[05_2017_transformer/01_tinygpt_shakespeare.py] PASSED [ 82%]
+tests/milestones/test_gates_transformer.py::test_identity_positional_encoding_fails[05_2017_transformer/03_tinycopilot.py] PASSED [ 85%]
+tests/milestones/test_gates_transformer.py::test_identity_positional_encoding_fails[05_2017_transformer/04_tinygpt_chat.py] PASSED [ 88%]
+tests/milestones/test_gates_transformer.py::test_attention_part2_catches_zero_loss_forward PASSED [ 91%]
+tests/milestones/test_gates_transformer.py::test_uniform_attention_fails_every_trained_part[05_2017_transformer/01_tinygpt_shakespeare.py] PASSED [ 94%]
+tests/milestones/test_gates_transformer.py::test_uniform_attention_fails_every_trained_part[05_2017_transformer/03_tinycopilot.py] PASSED [ 97%]
+tests/milestones/test_gates_transformer.py::test_uniform_attention_fails_every_trained_part[05_2017_transformer/04_tinygpt_chat.py] PASSED [100%]
+
+======================= 34 passed in 1005.80s (0:16:45) ========================

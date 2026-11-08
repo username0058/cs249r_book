@@ -1,0 +1,34 @@
+{
+  "baseline_fp32": {
+    "heldout_loss": 3.2277421877934382,
+    "ppl": 25.22264463866544,
+    "params": 111744,
+    "bytes": 446976
+  },
+  "int8": {
+    "heldout_loss": 4.107255121377798,
+    "ppl": 60.779655614758255,
+    "delta_loss": 0.8795129335843597,
+    "bytes": 137280,
+    "compression": 3.255944055944056,
+    "sample_text": "First Citizen:\nThe wavat thimes oy palemancechalonEYs "
+  },
+  "quant_error_mean_mse": {
+    "sym": 2.063334232633889e-06,
+    "asym": 1.7961532071589877e-06
+  },
+  "speed_measured": {
+    "prefill_fp32_ms": 21.169266663491726,
+    "prefill_int8sim_ms": 17.08952896296978,
+    "itl_fp32_ms": 1.9347723573446274,
+    "itl_int8sim_ms": 1.8870234489440918,
+    "note": "NumPy 仿真=fp32 计算 int8 值域,无真实加速"
+  },
+  "speed_modeled": {
+    "itl_cpu_fp32_ms": 0.0019228458404541013,
+    "itl_cpu_int8_ms": 0.00048071146011352534,
+    "itl_a100_fp32_ms": 0.0001886067523741149,
+    "itl_a100_int8_ms": 4.7151688093528726e-05,
+    "ttft": "compute-bound, int8 需硬件 int8 GEMM 才有吞吐收益"
+  }
+}

@@ -1,0 +1,30 @@
+[common] 已加载缓存权重: /user-data/djr/cs249r_book/tinytorch/djr_tinygpt_perf/task0_baseline/tinygpt_weights.npz
+[prune] FP32 基线: loss=3.2277 ppl=25.22 params=111,744
+    [finetune] epoch 1/3 loss=0.5929
+    [finetune] epoch 2/3 loss=0.4705
+    [finetune] epoch 3/3 loss=0.4336
+[prune] 幅度 s=30%: sparsity=30.0% loss 3.4507(Δ+0.223) -> 微调后 3.6406(Δ+0.413)
+    [finetune] epoch 1/3 loss=1.4778
+    [finetune] epoch 2/3 loss=0.9501
+    [finetune] epoch 3/3 loss=0.7932
+[prune] 幅度 s=50%: sparsity=50.0% loss 4.3050(Δ+1.077) -> 微调后 2.8597(Δ-0.368)
+    [finetune] epoch 1/3 loss=2.7050
+    [finetune] epoch 2/3 loss=2.0635
+    [finetune] epoch 3/3 loss=1.8830
+[prune] 幅度 s=70%: sparsity=70.0% loss 6.1429(Δ+2.915) -> 微调后 2.1292(Δ-1.099)
+    [finetune] epoch 1/3 loss=2.1378
+    [finetune] epoch 2/3 loss=1.6008
+    [finetune] epoch 3/3 loss=1.4127
+[prune] 结构 s=30%: sparsity=26.5% loss 5.5412(Δ+2.313) -> 微调后 2.2286(Δ-0.999)
+    [finetune] epoch 1/3 loss=2.6080
+    [finetune] epoch 2/3 loss=2.0118
+    [finetune] epoch 3/3 loss=1.8567
+[prune] 结构 s=50%: sparsity=44.7% loss 6.5408(Δ+3.313) -> 微调后 2.0480(Δ-1.180)
+    [finetune] epoch 1/3 loss=2.9522
+    [finetune] epoch 2/3 loss=2.2324
+    [finetune] epoch 3/3 loss=2.0712
+[prune] 结构 s=70%: sparsity=61.8% loss 7.3840(Δ+4.156) -> 微调后 2.1241(Δ-1.104)
+[prune] 速度(pre/decode ms): dense=11.48/0.72 | 置零50%=11.38/0.73 | 物理裁剪50%=8.80/0.71
+[prune] 物理裁剪后精度: loss=4.9215 ppl=137.21
+saved: /user-data/djr/cs249r_book/tinytorch/djr_tinygpt_perf/task3_compression/pruning_accuracy.png
+saved: /user-data/djr/cs249r_book/tinytorch/djr_tinygpt_perf/task3_compression/pruning_summary.json

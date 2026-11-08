@@ -1,0 +1,42 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0 -- /user-data/djr/env-tito/bin/python
+cachedir: .pytest_cache
+rootdir: /user-data/djr/cs249r_book/tinytorch
+configfile: pyproject.toml
+plugins: anyio-4.16.0
+collecting ... collected 32 items
+
+tests/01_tensor/test_tensor_core.py::TestTensorCreation::test_tensor_from_list PASSED [  3%]
+tests/01_tensor/test_tensor_core.py::TestTensorCreation::test_tensor_from_numpy PASSED [  6%]
+tests/01_tensor/test_tensor_core.py::TestTensorCreation::test_tensor_shapes PASSED [  9%]
+tests/01_tensor/test_tensor_core.py::TestTensorOperations::test_tensor_addition PASSED [ 12%]
+tests/01_tensor/test_tensor_core.py::TestTensorOperations::test_tensor_multiplication PASSED [ 15%]
+tests/01_tensor/test_tensor_core.py::TestTensorOperations::test_matrix_multiplication PASSED [ 18%]
+tests/01_tensor/test_tensor_core.py::TestTensorOperations::test_matrix_multiplication_rejects_scalars PASSED [ 21%]
+tests/01_tensor/test_tensor_core.py::TestTensorMemory::test_tensor_data_access PASSED [ 25%]
+tests/01_tensor/test_tensor_core.py::TestTensorMemory::test_tensor_copy_semantics PASSED [ 28%]
+tests/01_tensor/test_tensor_core.py::TestTensorMemory::test_tensor_memory_efficiency PASSED [ 31%]
+tests/01_tensor/test_tensor_core.py::TestTensorReshaping::test_tensor_reshape PASSED [ 34%]
+tests/01_tensor/test_tensor_core.py::TestTensorReshaping::test_tensor_flatten PASSED [ 37%]
+tests/01_tensor/test_tensor_core.py::TestTensorReshaping::test_tensor_transpose PASSED [ 40%]
+tests/01_tensor/test_tensor_core.py::TestTensorBroadcasting::test_scalar_broadcasting PASSED [ 43%]
+tests/01_tensor/test_tensor_core.py::TestTensorBroadcasting::test_vector_broadcasting PASSED [ 46%]
+tests/01_tensor/test_tensor_core.py::TestTensorPyTorchCompat::test_ndim PASSED [ 50%]
+tests/01_tensor/test_tensor_core.py::TestTensorPyTorchCompat::test_numel PASSED [ 53%]
+tests/01_tensor/test_tensor_core.py::TestTensorPyTorchCompat::test_view_same_as_reshape PASSED [ 56%]
+tests/01_tensor/test_tensor_core.py::TestTensorPyTorchCompat::test_view_with_minus_one PASSED [ 59%]
+tests/01_tensor/test_tensor_core.py::TestTensorPyTorchCompat::test_contiguous_returns_correct_data PASSED [ 62%]
+tests/01_tensor/test_tensor_core.py::TestTensorPyTorchCompat::test_contiguous_is_c_contiguous PASSED [ 65%]
+tests/01_tensor/test_tensor_core.py::TestTensorPyTorchCompat::test_masked_fill_basic PASSED [ 68%]
+tests/01_tensor/test_tensor_core.py::TestTensorPyTorchCompat::test_masked_fill_attention_pattern PASSED [ 71%]
+tests/01_tensor/test_tensor_core.py::TestTensorPyTorchCompat::test_masked_fill_does_not_mutate_original PASSED [ 75%]
+tests/01_tensor/test_tensor_core.py::TestTensorPyTorchCompat::test_tensor_from_tensor_list PASSED [ 78%]
+tests/01_tensor/test_tensor_core.py::test_masked_fill_broadcasts_shared_mask[mask0] PASSED [ 81%]
+tests/01_tensor/test_tensor_core.py::test_masked_fill_broadcasts_shared_mask[mask1] PASSED [ 84%]
+tests/01_tensor/test_tensor_core.py::test_transpose_has_independent_storage PASSED [ 87%]
+tests/01_tensor/test_tensor_core.py::test_scalar_copy_operations_preserve_rank[contiguous] PASSED [ 90%]
+tests/01_tensor/test_tensor_core.py::test_scalar_copy_operations_preserve_rank[transpose] PASSED [ 93%]
+tests/01_tensor/test_tensor_core.py::test_tensor_permute PASSED          [ 96%]
+tests/01_tensor/test_tensor_core.py::test_tensor_from_existing_tensor PASSED [100%]
+
+============================== 32 passed in 0.30s ==============================

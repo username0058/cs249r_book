@@ -1,0 +1,228 @@
+{
+  "model": {
+    "params": 111744,
+    "vocab": 59,
+    "embed": 64,
+    "layers": 2,
+    "heads": 4,
+    "max_seq": 64
+  },
+  "prefill": {
+    "wall_ms": 14.93443688377738,
+    "ops_ms": {
+      "embedding": 0.1419002190232277,
+      "b0.ln1": 0.2237388864159584,
+      "b0.attn.q_proj": 0.16875239089131355,
+      "b0.attn.k_proj": 0.17652492970228195,
+      "b0.attn.v_proj": 0.17357449978590012,
+      "b0.attn.out_proj": 0.2033649943768978,
+      "b0.ln2": 0.27583111077547073,
+      "b0.mlp.linear1": 2.1410616114735603,
+      "b0.mlp.gelu": 2.217900939285755,
+      "b0.mlp.linear2": 1.716718077659607,
+      "b1.ln1": 0.2351853996515274,
+      "b1.attn.q_proj": 0.1766100525856018,
+      "b1.attn.k_proj": 0.1839333213865757,
+      "b1.attn.v_proj": 0.21195542067289352,
+      "b1.attn.out_proj": 0.21292408928275108,
+      "b1.ln2": 0.26574721559882164,
+      "b1.mlp.linear1": 2.0203706808388233,
+      "b1.mlp.gelu": 2.1093901246786118,
+      "b1.mlp.linear2": 1.664616260677576,
+      "final_ln": 0.22191237658262253,
+      "lm_head": 0.14740582555532455,
+      "b0.attn.core": 1.8603675067424774,
+      "b1.attn.core": 1.8108712509274483
+    }
+  },
+  "decode": {
+    "wall_ms": 0.7559655234217644,
+    "ops_ms": {
+      "embedding": 0.04414170980453491,
+      "b0.ln1": 0.033058784902095795,
+      "b0.attn.q_proj": 0.011896155774593353,
+      "b0.attn.k_proj": 0.00912817195057869,
+      "b0.attn.v_proj": 0.008600670844316483,
+      "b0.attn.out_proj": 0.012207776308059692,
+      "b0.ln2": 0.031448155641555786,
+      "b0.mlp.linear1": 0.011918414384126663,
+      "b0.mlp.gelu": 0.029107462614774704,
+      "b0.mlp.linear2": 0.011671055108308792,
+      "b1.ln1": 0.03003254532814026,
+      "b1.attn.q_proj": 0.010371953248977661,
+      "b1.attn.k_proj": 0.008892547339200974,
+      "b1.attn.v_proj": 0.017943698912858963,
+      "b1.attn.out_proj": 0.011625885963439941,
+      "b1.ln2": 0.031281355768442154,
+      "b1.mlp.linear1": 0.011708028614521027,
+      "b1.mlp.gelu": 0.028435979038476944,
+      "b1.mlp.linear2": 0.01153489574790001,
+      "final_ln": 0.029633380472660065,
+      "lm_head": 0.006658211350440979,
+      "b0.attn.core": 0.1588256098330021,
+      "b1.attn.core": 0.18460173159837723
+    }
+  },
+  "memory_rows_mb": [
+    {
+      "layer": "embedding",
+      "weights": 0.030029296875,
+      "grads": 0.030029296875,
+      "acts": 0.25
+    },
+    {
+      "layer": "b0.ln1",
+      "weights": 0.00048828125,
+      "grads": 0.00048828125,
+      "acts": 0.25
+    },
+    {
+      "layer": "b0.attn",
+      "weights": 0.0634765625,
+      "grads": 0.0634765625,
+      "acts": 0.25
+    },
+    {
+      "layer": "b0.ln2",
+      "weights": 0.00048828125,
+      "grads": 0.00048828125,
+      "acts": 0.25
+    },
+    {
+      "layer": "b0.mlp",
+      "weights": 0.126220703125,
+      "grads": 0.126220703125,
+      "acts": 0.25
+    },
+    {
+      "layer": "b1.ln1",
+      "weights": 0.00048828125,
+      "grads": 0.00048828125,
+      "acts": 0.25
+    },
+    {
+      "layer": "b1.attn",
+      "weights": 0.0634765625,
+      "grads": 0.0634765625,
+      "acts": 0.25
+    },
+    {
+      "layer": "b1.ln2",
+      "weights": 0.00048828125,
+      "grads": 0.00048828125,
+      "acts": 0.25
+    },
+    {
+      "layer": "b1.mlp",
+      "weights": 0.126220703125,
+      "grads": 0.126220703125,
+      "acts": 0.25
+    },
+    {
+      "layer": "final_ln",
+      "weights": 0.00048828125,
+      "grads": 0.00048828125,
+      "acts": 0.25
+    },
+    {
+      "layer": "lm_head",
+      "weights": 0.014404296875,
+      "grads": 0.014404296875,
+      "acts": 0.23046875
+    }
+  ],
+  "flops": {
+    "embedding": {
+      "op_type": "embedding",
+      "flops": 65536.0,
+      "time_ms": 0.1419002190232277,
+      "arith_intensity": 0.25,
+      "bound": "memory-ish"
+    },
+    "b0.ln1": {
+      "op_type": "layernorm",
+      "flops": 327680,
+      "time_ms": 0.2237388864159584,
+      "arith_intensity": 0.41639557579700714,
+      "bound": "memory-ish"
+    },
+    "b0.attn.qkv+out": {
+      "op_type": "linear",
+      "flops": 33554432,
+      "time_ms": 0.0,
+      "arith_intensity": 30.089990817263544,
+      "bound": "memory-ish"
+    },
+    "b0.attn.core": {
+      "op_type": "attention-matmul",
+      "flops": 8388608,
+      "time_ms": 1.8603675067424774,
+      "arith_intensity": 0.25,
+      "bound": "memory-ish"
+    },
+    "b0.ln2": {
+      "op_type": "layernorm",
+      "flops": 327680,
+      "time_ms": 0.27583111077547073,
+      "arith_intensity": 0.41639557579700714,
+      "bound": "memory-ish"
+    },
+    "b0.mlp": {
+      "op_type": "linear+gelu",
+      "flops": 67108864,
+      "time_ms": 0.0,
+      "arith_intensity": 24.36961978246723,
+      "bound": "memory-ish"
+    },
+    "b1.ln1": {
+      "op_type": "layernorm",
+      "flops": 327680,
+      "time_ms": 0.2351853996515274,
+      "arith_intensity": 0.41639557579700714,
+      "bound": "memory-ish"
+    },
+    "b1.attn.qkv+out": {
+      "op_type": "linear",
+      "flops": 33554432,
+      "time_ms": 0.0,
+      "arith_intensity": 30.089990817263544,
+      "bound": "memory-ish"
+    },
+    "b1.attn.core": {
+      "op_type": "attention-matmul",
+      "flops": 8388608,
+      "time_ms": 1.8108712509274483,
+      "arith_intensity": 0.25,
+      "bound": "memory-ish"
+    },
+    "b1.ln2": {
+      "op_type": "layernorm",
+      "flops": 327680,
+      "time_ms": 0.26574721559882164,
+      "arith_intensity": 0.41639557579700714,
+      "bound": "memory-ish"
+    },
+    "b1.mlp": {
+      "op_type": "linear+gelu",
+      "flops": 67108864,
+      "time_ms": 0.0,
+      "arith_intensity": 24.36961978246723,
+      "bound": "memory-ish"
+    },
+    "final_ln": {
+      "op_type": "layernorm",
+      "flops": 327680,
+      "time_ms": 0.22191237658262253,
+      "arith_intensity": 0.41639557579700714,
+      "bound": "memory-ish"
+    },
+    "lm_head": {
+      "op_type": "linear",
+      "flops": 7733248,
+      "time_ms": 0.14740582555532455,
+      "arith_intensity": 14.896037353509982,
+      "bound": "memory-ish"
+    }
+  },
+  "notes": "NumPy CPU;op 计时含 Python 调度开销;内存结构与 GPU 显存同构"
+}
