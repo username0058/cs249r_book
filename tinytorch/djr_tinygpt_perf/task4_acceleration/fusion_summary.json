@@ -1,0 +1,47 @@
+{
+  "numeric_check": {
+    "max_abs_diff": 7.152557373046875e-06,
+    "rel": 4.4362715811985254e-07
+  },
+  "micro_ms": {
+    "GELU prefill (1024,256)": {
+      "unfused": 2.4968739598989487,
+      "fused": 0.48204418271780014,
+      "framework_ref": 6.875937804579735,
+      "speedup": 5.179761626457956
+    },
+    "GELU decode (1,256)": {
+      "unfused": 0.018443912267684937,
+      "fused": 0.007053837180137634,
+      "framework_ref": 0.013826414942741394,
+      "speedup": 2.614734618431476
+    },
+    "add+LN prefill (32,32,64)": {
+      "unfused": 0.4214998334646225,
+      "fused": 0.19004754722118378,
+      "framework_ref": null,
+      "speedup": 2.21786515862826
+    },
+    "add+LN decode (1,1,64)": {
+      "unfused": 0.026610679924488068,
+      "fused": 0.01955777406692505,
+      "framework_ref": null,
+      "speedup": 1.3606190476190476
+    }
+  },
+  "decode_itl_ms": {
+    "unfused": 1.1257324367761612,
+    "fused": 1.0077059268951416,
+    "speedup": 1.1171239611983557
+  },
+  "prefill_ms": {
+    "unfused": 11.619682423770428,
+    "fused": 9.544064290821552,
+    "speedup": 1.2174773838169741
+  },
+  "prefill_per_token_us": {
+    "unfused": 11.347346116963308,
+    "fused": 9.320375284005422
+  },
+  "notes": "融合=推理路径 raw numpy(无 autograd 记录),GELU 同公式公平对比;ITL=固定上下文(1,32)纯模型前向;中位数计时"
+}

@@ -36,6 +36,11 @@ djr_tinygpt_perf/
 │   ├── pruning_accuracy.png       # 精度 vs 剪枝率曲线
 │   ├── pruning_summary.json
 │   └── run_output.log             # 运行完整输出
+├── task4_acceleration/        # Task 4 Acceleration(issue #33)
+│   ├── run_acceleration.py        # 融合算子(fused GELU/add+LN)+ 微基准 + 模型级 ITL/Prefill
+│   ├── fusion_micro.png           # 逐算子融合微基准(同公式公平对照)
+│   ├── fusion_model.png           # 模型级 Decode vs Prefill 收益
+│   └── fusion_summary.json
 ├── reports/                   # (预留)
 └── REPORT.md                  # 总报告:原理 + 结论(打卡文字直接引用)
 ```

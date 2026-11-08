@@ -290,6 +290,79 @@ Embedding/LayerNorm 也不参与,故全局稀疏度低于请求值。
 
 ---
 
+## Task 4 Acceleration —— 算子融合与向量化(issue #33)
+
+### 产出 1:算子优化加速的原理是什么?
+
+**算子融合(fusion)** = 把多个小算子合并成一次遍历的内核,省掉三样东西:
+
+1. **中间结果的整数组读写**(内存带宽):unfused 的每一步都把中间数组
+   写回内存、下一步再读回来;融合内核读一次输入、写一次输出。
+   GPU 上省的是 HBM 往返,CPU/NumPy 上省的是内存带宽与缓存抖动;
+2. **临时数组的分配与释放**:每个中间 Tensor 都要 malloc 一次;
+3. **每个算子的调度/包装开销**:Python 调用、autograd 记录(Function.apply)、
+   Tensor 对象构造 —— 这正是 Task 1 测到的「插桩累计 18.56ms vs 纯净 wall
+   14.93ms」之间 ≈35% 的差额,融合吃掉的正是这块蛋糕。
+
+**向量化的边界**(诚实说明):NumPy 的向量化把循环下沉到 C,但
+**单表达式并不融合** —— `0.5*x*(1+tanh(...))` 每个运算符仍各自分配临时数组。
+课程框架自带的 `fused_gelu`(tanh 精确式)实测 6.9ms,反而比训练用的
+GELU 模块(2.5ms)更慢 —— 课程文档自己注明了这一点。真正的融合收益
+来自「去 autograd + 去临时对象 + 少一遍内存读写」,而不是把表达式写长。
+
+### 任务 1 实现思路
+
+| 融合算子 | 做法 | 公平性控制 |
+|---|---|---|
+| `fused_gelu_raw` | 与训练用 GELU 模块**完全同公式**(x·sigmoid(1.702x))的 raw numpy 版,去 autograd/Tensor 包装 | 唯一变量 = 融合本身;框架 tanh 版只作参考柱 |
+| `fused_add_norm` | 融合 Pre-LN 块的「残差相加 + LayerNorm」:`t = residual + x` 后原地中心化,一次写出 | 对照 = Tensor 加法 + LN 模块(autograd 路径) |
+| `fused block` | 数据流严格保序:残差状态先更新再进 LN2/输出(第一版曾漏掉残差更新,被数值校验当场抓住) | 输出与原块最大差 **7.15e-06**(纯浮点顺序) |
+
+**测量方法注意**(测量纪律):`generate()` 端到端循环含采样/解码 Python
+开销,会淹没融合收益(首测 1.001×,全是采样开销的噪声)。正确口径是
+**固定上下文 (B=1,S=32) 的纯模型前向** 作为 ITL;基线全部测完再切换
+融合态,避免状态串扰(第二版把 baseline 在融合态下测了,标签互换,
+已修正测量顺序后重跑)。
+
+### 任务 2:融合前后对比 + Decode/Prefill 表现(图:fusion_micro.png / fusion_model.png)
+
+**微基准(逐算子,同公式对照):**
+
+| 算子 | 形态 | unfused(autograd 模块) | fused(raw numpy) | 加速 |
+|---|---|---|---|---|
+| GELU | prefill (1024,256) | 2.50 ms | 0.48 ms | **5.18×** |
+| GELU | decode (1,256) | 18 µs | 7 µs | **2.61×** |
+| add+LN | prefill (32,32,64) | 0.42 ms | 0.19 ms | **2.22×** |
+| add+LN | decode (1,1,64) | 27 µs | 20 µs | **1.36×** |
+
+**模型级(整模型 wall):**
+
+| 阶段 | unfused | fused | 加速比 | 每 token 绝对收益 |
+|---|---|---|---|---|
+| Decode ITL(B=1, ctx=32) | 1.126 ms | 1.008 ms | **1.117×** | **省 118 µs/token** |
+| Prefill(B=32,S=32) | 11.62 ms | 9.54 ms | **1.217×** | 省 2.0 µs/token |
+
+**结论:融合收益的不对称,要分「比率」和「绝对量」两个视角读:**
+
+1. **比率视角**:模型级两阶段都只有 ~1.1-1.2×,远低于微基准的 2-5× ——
+   因为 GEMM(linear/attention)占模型时间的大头(>80%),elementwise
+   融合动不了它。微基准的巨大加速被 GEMM 摊薄了 —— 这是 Amdahl 定律
+   的活例:优化非瓶颈部分,整体收益被封顶。
+2. **绝对量视角(关键)**:**Decode 每 token 省 118µs,Prefill 每 token
+   只省 2.0µs —— 差 60 倍**。机制:decode 每 token 都要重走一遍完整的
+   op 序列,融合省下的调度/包装/内存往返开销**按「次」收费**,每 token
+   全额支付;prefill 一次吃 1024 个 token,同样的开销被**摊薄**到每个
+   token 上。
+3. **与真实 GPU 的同构性**:生产系统里 decode 是访存受限,融合内核
+   (fused add+LN、fused attention,如 vLLM/TensorRT-LLM)省的是激活的
+   HBM 往返 → ITL 大涨;prefill 计算受限,融合只作用于 elementwise
+   那一小块 → TTFT 提升有限。我们在 NumPy 里测到的「decode 每 token
+   收益 60 倍于 prefill」正是同一机制在 CPU 形态下的投影:开销源从
+   HBM 带宽换成了 Python/autograd 调度,但「按次 vs 按字节」的经济学
+   不变。
+
+---
+
 ## 附:一句话总结(供打卡文案)
 
 环境隔离 venv + 独立工作目录,全 CPU 零 GPU 占用;
@@ -299,4 +372,7 @@ Task1:测量优先 —— Prefill 瓶颈在 MLP/GEMM(15.2 GFLOP/s),
 Decode 瓶颈在 attention-core,激活占训练内存 76%;
 Task2:PTQ INT8 压缩 3.26×,ITL 真实收益≈4×(带宽)、TTFT≈1×(计算受限)
 —— 量化对 Decode 不对称加速的完整解释;Task3:幅度/结构化剪枝 30/50/70%
-+ 掩码微调,精度-压缩-速度三角实测,物理裁剪给出真实加速。
++ 掩码微调,精度-压缩-速度三角实测,物理裁剪给出真实加速;
+Task4:同公式融合算子(fused GELU 5.18×、fused add+LN 2.22×),
+模型级 Prefill 1.217×/ITL 1.117×;按每 token 绝对收益,
+Decode(118µs)是 Prefill(2µs)的 60 倍 —— 融合收益不对称的完整机制。
